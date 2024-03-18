@@ -1,4 +1,4 @@
-package com.example.mvvmcounter.ui.theme
+package com.example.mvvmcounter
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

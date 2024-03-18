@@ -3,6 +3,7 @@ package com.example.mvvmcounter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mvvmcounter.ui.theme.CounterViewModel
 import com.example.mvvmcounter.ui.theme.MVVMCounterTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,12 +35,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MVVMCounterTheme {
+                val viewModel : CounterViewModel = viewModel()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TheCounterApp()
+                    TheCounterApp(viewModel)
                 }
             }
         }
@@ -44,31 +49,22 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TheCounterApp(){
-    var count by remember { mutableStateOf(0) }
-
-    fun increment(){
-        count++
-    }
-
-    fun decrement(){
-        count--
-    }
+fun TheCounterApp(viewModel: CounterViewModel){
 
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Text(text = "Count: ${count}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Count: ${viewModel.count.value}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.padding(7.dp))
         Row {
-            Button(onClick = { increment() }) {
+            Button(onClick = { viewModel.increment() }) {
                 Text(text = "Add Value +")
             }
             Spacer(modifier = Modifier.padding(7.dp))
 
-            Button(onClick = { decrement() }) {
+            Button(onClick = { viewModel.decrement() }) {
                 Text(text = "Deduct Value -")
             }
         }
